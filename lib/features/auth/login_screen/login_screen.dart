@@ -65,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   icon: Icons.mail_outline_rounded,
                   keyboardType: TextInputType.emailAddress,
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 20),
                 AuthTextField(
                   controller: _passwordController,
                   validator: Validations.validatePassword,
