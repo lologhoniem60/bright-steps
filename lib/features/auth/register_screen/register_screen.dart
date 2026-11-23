@@ -9,6 +9,7 @@ import '../../../core/widgets/custom_primary_button.dart';
 import '../../../core/widgets/custom_text_field.dart';
 import '../widgets/auth_header_widget.dart';
 import '../widgets/password_criteria_widget.dart';
+import 'register_service.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -30,6 +31,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _passwordVisible = false;
   bool _confirmVisible = false;
   bool _isPasswordFocused = false;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -69,9 +71,41 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
-  void _submit() {
+  Future<void> signup() async {
     if (_formKey.currentState?.validate() == true) {
-      Navigator.pushReplacementNamed(context, Routes.kidsProfileRoute);
+      setState(() {
+        _isLoading = true;
+      });
+
+      final result = await RegisterService.register(
+        firstName: _firstNameController.text,
+        lastName: _secondNameController.text,
+        email: _emailController.text,
+        password: _passwordController.text,
+        phone: _phoneController.text,
+      );
+
+      if (!mounted) return;
+      setState(() {
+        _isLoading = false;
+      });
+
+      if (result.statusCode == 200 || result.statusCode == 201) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(result.message ?? 'تم إنشاء الحساب بنجاح'),
+            backgroundColor: Colors.green,
+          ),
+        );
+        Navigator.pushReplacementNamed(context, Routes.loginRoute);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(result.message ?? 'Registration failed'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
@@ -166,12 +200,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                CustomPrimaryButton(
-                  label: StringsManager.signUp,
-                  onPressed: _submit,
-                  height: 46,
-                  arrow: true,
-                ),
+                _isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(color: ColorsManager.blue),
+                      )
+                    : CustomPrimaryButton(
+                        label: StringsManager.signUp,
+                        onPressed: signup,
+                        height: 46,
+                        arrow: true,
+                      ),
                 const SizedBox(height: 12),
                 const AuthOrDivider(),
                 const SizedBox(height: 12),

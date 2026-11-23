@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'config/theme/theme_manager.dart';
+import 'core/api/api_manager.dart';
 import 'core/prefs_manager/prefs_manager.dart';
 import 'core/resources/routes_manager.dart';
 import 'core/resources/strings_manager.dart';
@@ -8,6 +9,7 @@ import 'core/resources/strings_manager.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await PrefsManager.init();
+  ApiManager.init();
   runApp(const BrightStepsApp());
 }
 
