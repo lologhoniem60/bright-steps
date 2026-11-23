@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../resources/colors_manager.dart';
 
-class AuthPrimaryButton extends StatelessWidget {
-  const AuthPrimaryButton({super.key,
+class CustomPrimaryButton extends StatelessWidget {
+  const CustomPrimaryButton({
+    super.key,
     required this.label,
     required this.onPressed,
     this.height = 50,

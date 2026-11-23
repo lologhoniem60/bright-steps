@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../resources/colors_manager.dart';
 
-class AuthTextField extends StatelessWidget {
-  const AuthTextField({
+class CustomTextField extends StatelessWidget {
+  const CustomTextField({
     super.key,
     required this.hint,
     required this.icon,
@@ -33,7 +33,7 @@ class AuthTextField extends StatelessWidget {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       keyboardType: keyboardType,
       obscureText: obscureText,
-      style: const TextStyle(fontSize: 20, color: ColorsManager.ink),
+      style: const TextStyle(fontSize: 13, color: ColorsManager.ink),
       decoration: InputDecoration(
         hintText: hint,
         prefixIcon: Icon(icon, size: 18),

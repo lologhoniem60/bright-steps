@@ -5,8 +5,8 @@ import '../../../core/resources/routes_manager.dart';
 import '../../../core/resources/strings_manager.dart';
 import '../../../core/validations/validations.dart';
 import '../../../core/widgets/auth_or_divider.dart';
-import '../../../core/widgets/auth_primary_button.dart';
-import '../../../core/widgets/auth_text_field.dart';
+import '../../../core/widgets/custom_primary_button.dart';
+import '../../../core/widgets/custom_text_field.dart';
 import '../widgets/auth_header_widget.dart';
 import '../widgets/password_criteria_widget.dart';
 
@@ -70,7 +70,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   void _submit() {
-    if (_formKey.currentState?.validate() == true) {}
+    if (_formKey.currentState?.validate() == true) {
+      Navigator.pushReplacementNamed(context, Routes.kidsProfileRoute);
+    }
   }
 
   @override
@@ -90,21 +92,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   subtitle: StringsManager.registerSubtitle,
                 ),
                 const SizedBox(height: 14),
-                AuthTextField(
+                CustomTextField(
                   controller: _firstNameController,
                   validator: Validations.validateFirstName,
                   hint: StringsManager.firstNameHint,
                   icon: Icons.person_outline_rounded,
                 ),
                 const SizedBox(height: 12),
-                AuthTextField(
+                CustomTextField(
                   controller: _secondNameController,
                   validator: Validations.validateLastName,
                   hint: StringsManager.secondNameHint,
                   icon: Icons.person_outline_rounded,
                 ),
                 const SizedBox(height: 12),
-                AuthTextField(
+                CustomTextField(
                   controller: _emailController,
                   validator: Validations.validateEmail,
                   hint: StringsManager.emailHint,
@@ -112,7 +114,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   keyboardType: TextInputType.emailAddress,
                 ),
                 const SizedBox(height: 12),
-                AuthTextField(
+                CustomTextField(
                   controller: _phoneController,
                   validator: Validations.validatePhone,
                   hint: StringsManager.phoneNumberHint,
@@ -120,7 +122,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   keyboardType: TextInputType.phone,
                 ),
                 const SizedBox(height: 12),
-                AuthTextField(
+                CustomTextField(
                   controller: _passwordController,
                   focusNode: _passwordFocusNode,
                   validator: Validations.validatePassword,
@@ -143,7 +145,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   PasswordCriteriaWidget(password: _passwordController.text),
                 ],
                 const SizedBox(height: 12),
-                AuthTextField(
+                CustomTextField(
                   controller: _confirmPasswordController,
                   validator: (value) => Validations.validatePasswordConfirmation(
                     _passwordController.text,
@@ -164,7 +166,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                AuthPrimaryButton(
+                CustomPrimaryButton(
                   label: StringsManager.signUp,
                   onPressed: _submit,
                   height: 46,

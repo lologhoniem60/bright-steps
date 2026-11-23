@@ -5,8 +5,8 @@ import '../../../core/resources/routes_manager.dart';
 import '../../../core/resources/strings_manager.dart';
 import '../../../core/validations/validations.dart';
 import '../../../core/widgets/auth_or_divider.dart';
-import '../../../core/widgets/auth_primary_button.dart';
-import '../../../core/widgets/auth_text_field.dart';
+import '../../../core/widgets/custom_primary_button.dart';
+import '../../../core/widgets/custom_text_field.dart';
 import '../widgets/auth_header_widget.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -39,6 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _submit() {
     if (_formKey.currentState?.validate() == true) {
+      Navigator.pushReplacementNamed(context, Routes.kidsProfileRoute);
     }
   }
 
@@ -58,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   subtitle: StringsManager.loginSubtitle,
                 ),
                 const SizedBox(height: 20),
-                AuthTextField(
+                CustomTextField(
                   controller: _emailController,
                   validator: Validations.validateEmail,
                   hint: StringsManager.emailHint,
@@ -66,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   keyboardType: TextInputType.emailAddress,
                 ),
                 const SizedBox(height: 20),
-                AuthTextField(
+                CustomTextField(
                   controller: _passwordController,
                   validator: Validations.validatePassword,
                   hint: StringsManager.passwordHint,
@@ -100,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     const Text(StringsManager.rememberMe, style: TextStyle(fontSize: 12)),
                     const Spacer(),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () => Navigator.pushNamed(context, Routes.forgotPasswordRoute),
                       style: TextButton.styleFrom(
                         padding: EdgeInsets.zero,
                         minimumSize: Size.zero,
@@ -114,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
                 const SizedBox(height: 18),
-                AuthPrimaryButton(label: StringsManager.signIn, onPressed: _submit),
+                CustomPrimaryButton(label: StringsManager.signIn, onPressed: _submit),
                 const SizedBox(height: 10),
                 const AuthOrDivider(),
                 const SizedBox(height: 10),
