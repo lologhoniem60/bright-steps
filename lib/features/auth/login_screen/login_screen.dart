@@ -8,6 +8,7 @@ import '../../../core/widgets/auth_or_divider.dart';
 import '../../../core/widgets/custom_primary_button.dart';
 import '../../../core/widgets/custom_text_field.dart';
 import '../widgets/auth_header_widget.dart';
+import 'login_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -22,6 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
   late final TextEditingController _passwordController;
   bool _remember = true;
   bool _obscure = true;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -37,9 +39,38 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  void _submit() {
+  Future<void> signIn() async {
     if (_formKey.currentState?.validate() == true) {
-      Navigator.pushReplacementNamed(context, Routes.kidsProfileRoute);
+      setState(() {
+        _isLoading = true;
+      });
+
+      final result = await LoginService.login(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+
+      if (!mounted) return;
+      setState(() {
+        _isLoading = false;
+      });
+
+      if (result.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(result.message ?? 'تم تسجيل الدخول بنجاح'),
+            backgroundColor: Colors.green,
+          ),
+        );
+        Navigator.pushReplacementNamed(context, Routes.kidsProfileRoute);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(result.message ?? 'البريد الإلكتروني أو كلمة المرور غير صحيحة.'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
@@ -115,7 +146,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
                 const SizedBox(height: 18),
-                CustomPrimaryButton(label: StringsManager.signIn, onPressed: _submit),
+                _isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(color: ColorsManager.blue),
+                      )
+                    : CustomPrimaryButton(label: StringsManager.signIn, onPressed: signIn),
                 const SizedBox(height: 10),
                 const AuthOrDivider(),
                 const SizedBox(height: 10),
